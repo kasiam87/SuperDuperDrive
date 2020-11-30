@@ -19,7 +19,7 @@ public class UserService {
     }
 
     public boolean isUsernameAvailable(String username) {
-        return userMapper.getUser(username) == null;
+        return userMapper.getUser(username) != null;
     }
 
     public int createUser(User user) {

@@ -13,19 +13,22 @@ import java.util.List;
 @Mapper
 public interface NoteMapper {
 
-    @Select("SELECT * FROM NOTES WHERE userid = #{userId}")
+    @Select("SELECT * FROM NOTES WHERE userId = #{userId}")
     List<Note> getNotes(Integer userId);
 
-    @Insert("INSERT INTO NOTES (noteid, notetitle, notedescription, userid) " +
+    @Select("SELECT * FROM NOTES WHERE noteId = #{noteId}")
+    Note getNote(Integer noteId);
+
+    @Insert("INSERT INTO NOTES (noteId, noteTitle, noteDescription, userId) " +
             "VALUES (#{noteId}, #{noteTitle}, #{noteDescription}, #{userId})")
-    @Options(useGeneratedKeys = true, keyProperty = "noteid")
+    @Options(useGeneratedKeys = true, keyProperty = "noteId")
     int addNote(Note note);
 
-    @Delete("DELETE FROM NOTES WHERE noteid = #{noteId}")
-    void deleteNote(Integer noteId);
-
     @Update("UPDATE NOTES " +
-            "SET notetitle = #{noteTitle}, notedescription = #{noteDescription}, userid = #{userid}" +
-            "WHERE noteid = #{noteId}")
+            "SET noteTitle = #{noteTitle}, noteDescription = #{noteDescription}" +
+            "WHERE noteId = #{noteId}")
     void updateNote(Note note);
+
+    @Delete("DELETE FROM NOTES WHERE noteId = #{noteId}")
+    void deleteNote(Integer noteId);
 }
