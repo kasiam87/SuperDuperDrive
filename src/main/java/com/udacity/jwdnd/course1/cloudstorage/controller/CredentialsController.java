@@ -1,8 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
+import com.udacity.jwdnd.course1.cloudstorage.model.CredentialTable;
 import com.udacity.jwdnd.course1.cloudstorage.service.CredentialsService;
-import com.udacity.jwdnd.course1.cloudstorage.service.EncryptionService;
 import com.udacity.jwdnd.course1.cloudstorage.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,7 @@ public class CredentialsController {
     }
 
     @PostMapping("/add")
-    public String addCredentials(Authentication authentication, @ModelAttribute Credential credential, Model model){
+    public String addCredentials(Authentication authentication, @ModelAttribute CredentialTable credential, Model model){
         String actionErrorMsg = null;
 
         Integer userId = userService.getUser(authentication.getName()).getUserId();
@@ -42,7 +41,7 @@ public class CredentialsController {
     }
 
     @PostMapping("/{credentialId}/delete")
-    public String deleteCredential(@PathVariable("credentialId") Integer credentialId, Credential credential, Model model){
+    public String deleteCredential(@PathVariable("credentialId") Integer credentialId, CredentialTable credential, Model model){
         String actionErrorMsg = null;
 
         if (!credentialsService.isCredentialPresent(credential.getCredentialId())) {
@@ -64,7 +63,7 @@ public class CredentialsController {
     }
 
     @PostMapping("/{credentialId}/update")
-    public String updateCredential(Credential credential, Model model){
+    public String updateCredential(CredentialTable credential, Model model){
         String actionErrorMsg = null;
 
         if (!credentialsService.isCredentialPresent(credential.getCredentialId())){

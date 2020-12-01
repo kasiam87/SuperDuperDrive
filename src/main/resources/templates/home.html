@@ -12,7 +12,7 @@
         <div class="container">
             <div id="logoutDiv">
                 <form action="#" th:action="@{/logout}" method="POST">
-                    <button type="submit" class="btn btn-secondary float-right">Logout</button>
+                    <button type="submit" class="btn btn-secondary float-right" id="logout-button">Logout</button>
                 </form>
             </div>
             <div id="contentDiv" style="clear: right;">
@@ -35,7 +35,7 @@
                                         <input type="file" class="form-control-file" id="multipartFile" name="multipartFile">
                                     </div>
                                     <div class="col-sm-4">
-                                        <button type="submit" class="btn btn-dark">Upload</button>
+                                        <button type="submit" class="btn btn-dark" id="upload-button">Upload</button>
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
-                        <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showNoteModal()">
+                        <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showNoteModal()" id="add-note-button">
                             + Add a New Note
                         </button>
 
@@ -118,7 +118,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="$('#noteSubmit').click();">Save changes</button>
+                                        <button type="button" class="btn btn-primary" onclick="$('#noteSubmit').click();" id="save-note-changes">Save changes</button>
                                     </div>
                                 </div>
                             </div>
@@ -149,14 +149,14 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="$('#editNoteSubmit').click();">Save changes</button>
+                                        <button type="button" class="btn btn-primary" onclick="$('#editNoteSubmit').click();" id="save-edit-note-changes">Save changes</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="nav-credential" role="tabpanel" aria-labelledby="nav-credential-tab">
-                        <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showCredentialModal()">
+                        <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showCredentialModal()" id="add-credential-button">
                             + Add a New Credential
                         </button>
 
@@ -173,7 +173,7 @@
                                 <tbody>
                                 <tr th:each="credential : ${availableCredentials}">
                                     <td>
-                                        <button class="btn btn-success" th:onclick="showEditCredentialModal([[${credential.credentialId}]], [[${credential.key}]], [[${credential.url}]], [[${credential.username}]], [[${credential.password}]])">Edit</button>
+                                        <button class="btn btn-success" th:onclick="showEditCredentialModal([[${credential.credentialId}]], [[${credential.key}]], [[${credential.url}]], [[${credential.username}]], [[${credential.decryptedPassword}]])">Edit</button>
                                         <form th:action="@{/credentials/{credentialId}/delete(credentialId=${credential.credentialId})}" th:object="${credential}" method="POST">
                                             <input type="submit" value="Delete" class="btn btn-danger"/>
                                         </form>
