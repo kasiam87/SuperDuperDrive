@@ -25,13 +25,11 @@ public class NotesController {
 
     @PostMapping("/add")
     public String addNote(Authentication authentication, @ModelAttribute Note note, Model model){
-        System.out.println("Enter add Note method");
         String actionErrorMsg = null;
 
         Integer userId = userService.getUser(authentication.getName()).getUserId();
         note.setUserId(userId);
         notesService.addNote(note);
-        model.addAttribute("availableNotes", notesService.getAllNotes(userId));
 
         if (actionErrorMsg == null) {
             model.addAttribute("updateSuccess", true);
@@ -44,16 +42,12 @@ public class NotesController {
 
     @PostMapping("/{noteId}/delete")
     public String deleteNote(@PathVariable("noteId") Integer noteId, Note note, Model model){
-        System.out.println("Enter delete Note method");
-        System.out.println("Note id = " + note.getNoteId());
-
         String actionErrorMsg = null;
 
         if (!notesService.isNotePresent(note.getNoteId())){
-            actionErrorMsg = "Cannot find note";
+            actionErrorMsg = "Cannot find note.  ";
         }
         notesService.deleteNote(note.getNoteId());
-        model.addAttribute("availableNotes", notesService.getAllNotes(note.getUserId()));
 
         if (actionErrorMsg == null) {
             model.addAttribute("updateSuccess", true);
@@ -64,11 +58,11 @@ public class NotesController {
     }
 
     @PostMapping("/{noteId}/update")
-    public String updateNote(@ModelAttribute Note note, Model model){
+    public String updateNote(Note note, Model model){
         String actionErrorMsg = null;
 
         if (!notesService.isNotePresent(note.getNoteId())){
-            actionErrorMsg = "Cannot find note";
+            actionErrorMsg = "Cannot find note. ";
         }
 
         notesService.updateNote(note);
