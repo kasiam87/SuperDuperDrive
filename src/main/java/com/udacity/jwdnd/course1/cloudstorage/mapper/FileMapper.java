@@ -12,17 +12,17 @@ import java.util.List;
 @Mapper
 public interface FileMapper {
 
-    @Select("SELECT * FROM FILES WHERE userid = #{userId}")
+    @Select("SELECT * FROM FILES WHERE userId = #{userId}")
     List<File> getFiles(Integer userId);
 
-    @Select("SELECT * FROM FILES WHERE userid = #{userId} AND fileid = #{fileId}")
-    File getFile(Integer userId, Integer fileId);
+    @Select("SELECT * FROM FILES WHERE fileId = #{fileId}")
+    File getFile(Integer fileId);
 
-    @Insert("INSERT INTO FILES (fileid, filename, contenttype, filesize, userid, filedata) " +
+    @Insert("INSERT INTO FILES (fileId, filename, contenttype, filesize, userid, filedata) " +
             "VALUES (#{fileId}, #{filename}, #{contentType}, #{fileSize}, #{userId}, #{fileData})")
-    @Options(useGeneratedKeys = true, keyProperty = "fileid")
+    @Options(useGeneratedKeys = true, keyProperty = "fileId")
     int addFile(File file);
 
-    @Delete("DELETE FROM FILES WHERE fileid = #{fileId}")
+    @Delete("DELETE FROM FILES WHERE fileId = #{fileId}")
     void deleteFile(Integer fileId);
 }

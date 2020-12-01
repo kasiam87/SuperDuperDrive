@@ -25,14 +25,14 @@
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
-                        <form action="#" enctype="multipart/form-data" method="POST">
+                        <form action="#" enctype="multipart/form-data" th:action="@{'/files/add'}" th:object="${file}" method="POST">
                             <div class="container">
                                 <div class="row" style="margin: 1em;">
                                     <div class="col-sm-2">
-                                        <label for="fileUpload">Upload a New File:</label>
+                                        <label for="multipartFile">Upload a New File:</label>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="file" class="form-control-file" id="fileUpload" name="fileUpload">
+                                        <input type="file" class="form-control-file" id="multipartFile" name="multipartFile">
                                     </div>
                                     <div class="col-sm-4">
                                         <button type="submit" class="btn btn-dark">Upload</button>
@@ -42,19 +42,22 @@
                         </form>
                         <div class="table-responsive">
                             <table class="table table-striped" id="fileTable">
-                                <thead>
+                                <thead th:if="${availableFiles!=null and !availableFiles.empty}">
                                     <tr>
                                         <th style="width: 20%" scope="col"></th>
                                         <th style="width: 80%" scope="col">File Name</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <tr th:each="file : ${availableFiles}">
                                     <td>
-                                        <a target="_blank" class="btn btn-success">View</a>
-                                        <a  class="btn btn-danger">Delete</a>
+                                        <a target="_blank" class="btn btn-success" th:href="@{/files/{fileId}/get(fileId=${file.fileId})}">View</a>
+<!--                                        <a  class="btn btn-danger">Delete</a>-->
+                                        <form th:action="@{/files/{fileId}/delete(fileId=${file.fileId})}" th:object="${file}" method="POST">
+                                            <input type="submit" value="Delete" class="btn btn-danger"/>
+                                        </form>
                                     </td>
-                                    <th scope="row">ExampleFile.txt</th>
+                                    <th scope="row" th:text="${file.filename}">ExampleFile.txt</th>
                                 </tr>
                                 </tbody>
                             </table>
@@ -263,7 +266,6 @@
         <script th:src="@{/js/popper.min.js}"></script>
         <script th:src="@{/js/bootstrap.min.js}"></script>
 
-        <!--For opening the note modal-->
         <script type="text/javascript">
             // For opening the note modal
             function showNoteModal(noteId, noteTitle, noteDescription) {
