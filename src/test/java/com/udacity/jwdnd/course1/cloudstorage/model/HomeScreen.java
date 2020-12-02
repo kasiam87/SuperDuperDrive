@@ -33,7 +33,7 @@ public class HomeScreen extends BaseScreen {
     public WebElement deleteNoteButton;
 
     @FindBy(id="edit-credential-button")
-    private WebElement editCredentialeButton;
+    private WebElement editCredentialButton;
 
     @FindBy(id="delete-credential-button")
     private WebElement deleteCredentialButton;
@@ -86,6 +86,22 @@ public class HomeScreen extends BaseScreen {
 
     public void tapDeleteNoteButton(){
         deleteNoteButton.click();
+    }
+
+    public void goToCredentials(){
+        credentialsTab.click();
+    }
+
+    public void openNewCredentialModal(){
+        addCredentialButton.click();
+    }
+
+    public void openEditCredentialModal(){
+        editCredentialButton.click();
+    }
+
+    public void tapDeleteCredentialButton(){
+        deleteCredentialButton.click();
     }
 
 }

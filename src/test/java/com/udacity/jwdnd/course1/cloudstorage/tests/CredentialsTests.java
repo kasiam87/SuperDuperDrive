@@ -1,8 +1,8 @@
 package com.udacity.jwdnd.course1.cloudstorage.tests;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.CredentialModal;
 import com.udacity.jwdnd.course1.cloudstorage.model.HomeScreen;
 import com.udacity.jwdnd.course1.cloudstorage.model.LoginScreen;
-import com.udacity.jwdnd.course1.cloudstorage.model.NoteModal;
 import com.udacity.jwdnd.course1.cloudstorage.model.ResultScreen;
 import com.udacity.jwdnd.course1.cloudstorage.model.SignUpScreen;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class NotesTests {
+public class CredentialsTests {
 
     @LocalServerPort
     private Integer port;
@@ -37,17 +37,17 @@ public class NotesTests {
     private SignUpScreen signUpScreen;
     private LoginScreen loginScreen;
     private HomeScreen homeScreen;
-    private NoteModal noteModal;
+    private CredentialModal credentialModal;
     private ResultScreen resultScreen;
 
-    private static final String USER = "note-test-user";
-    private static final String PASSWORD = "note-test-password";
-    private static final String NOTE_TITLE = "Some title";
-    private static final String NOTE_DESCRIPTION = "Some description";
+    private static final String USER = "credential-test-user";
+    private static final String PASSWORD = "credential-test-password";
+    private static final String URL = "http://gmail.com";
+    private static final String CREDENTIAL_USER = "user";
+    private static final String CREDENTIAL_PASSWORD = "user";
 
-    private static final String SUFFIX = "(2)";
-    private static final String EDITED_NOTE_TITLE = NOTE_TITLE + SUFFIX;
-    private static final String EDITED_NOTE_DESCRIPTION = NOTE_DESCRIPTION + SUFFIX;
+    private static final String SUFFIX = "2";
+    private static final String EDITED_CREDENTIAL_USER = CREDENTIAL_USER + SUFFIX;
 
     @BeforeAll
     public void beforeAll() {
@@ -56,7 +56,7 @@ public class NotesTests {
         signUpScreen = new SignUpScreen(driver);
         loginScreen = new LoginScreen(driver);
         homeScreen = new HomeScreen(driver);
-        noteModal = new NoteModal(driver);
+        credentialModal = new CredentialModal(driver);
         resultScreen = new ResultScreen(driver);
         driver.get(String.format("http://localhost:%d/login", port));
         signUp();
@@ -98,48 +98,48 @@ public class NotesTests {
 
     @Test
     @Order(1)
-    public void createNote() {
-        homeScreen.goToNotes();
-        assertTrue(homeScreen.isNotesTabLoaded(), "Notes tab was not loaded!");
-        homeScreen.openNewNoteModal();
-        noteModal.enterNoteAndSave(NOTE_TITLE, NOTE_DESCRIPTION);
+    public void createCredential() {
+        homeScreen.goToCredentials();
+        assertTrue(homeScreen.isCredentialsTabLoaded(), "Credential tab was not loaded!");
+        homeScreen.openNewCredentialModal();
+        credentialModal.enterCredentialAndSave(URL, CREDENTIAL_USER, CREDENTIAL_PASSWORD);
         assertTrue(resultScreen.isResultScreenLoaded(), "Result screen was not loaded!");
         resultScreen.goToHomeScreen();
         assertTrue(driver.getCurrentUrl().endsWith("home"), "Current url should be /home");
-        homeScreen.goToNotes();
-        assertTrue(homeScreen.isNotesTabLoaded(), "Notes tab was not loaded!");
-        assertTrue(homeScreen.noteTitleLabel.getText().equalsIgnoreCase(NOTE_TITLE), "Incorrect title displayed");
-        assertTrue(homeScreen.noteDescriptionLabel.getText().equalsIgnoreCase(NOTE_DESCRIPTION), "Incorrect description displayed");
+        homeScreen.goToCredentials();
+        assertTrue(homeScreen.isCredentialsTabLoaded(), "Credential tab was not loaded!");
+        assertTrue(homeScreen.urlLabel.getText().equalsIgnoreCase(URL), "Incorrect url displayed");
+        assertTrue(homeScreen.userLabel.getText().equalsIgnoreCase(CREDENTIAL_USER), "Incorrect username displayed");
     }
 
     @Test
     @Order(2)
-    public void editNote() {
-        homeScreen.goToNotes();
-        assertTrue(homeScreen.isNotesTabLoaded(), "Notes tab was not loaded!");
-        homeScreen.openEditNoteModal();
-        noteModal.editNoteAndSave(SUFFIX, SUFFIX);
+    public void editCredential() {
+        homeScreen.goToCredentials();
+        assertTrue(homeScreen.isCredentialsTabLoaded(), "Credential tab was not loaded!");
+        homeScreen.openEditCredentialModal();
+        credentialModal.editCredentialAndSave("", SUFFIX, "");
         assertTrue(resultScreen.isResultScreenLoaded(), "Result screen was not loaded!");
         resultScreen.goToHomeScreen();
         assertTrue(driver.getCurrentUrl().endsWith("home"), "Current url should be /home");
-        homeScreen.goToNotes();
-        assertTrue(homeScreen.isNotesTabLoaded(), "Notes tab was not loaded!");
-        assertTrue(driver.getCurrentUrl().endsWith("home"), "Current url should be /home");
-        assertTrue(homeScreen.noteTitleLabel.getText().equalsIgnoreCase(EDITED_NOTE_TITLE), "Incorrect title displayed");
-        assertTrue(homeScreen.noteDescriptionLabel.getText().equalsIgnoreCase(EDITED_NOTE_DESCRIPTION), "Incorrect description displayed");
+        homeScreen.goToCredentials();
+        assertTrue(homeScreen.isCredentialsTabLoaded(), "Credential tab was not loaded!");
+        assertTrue(homeScreen.urlLabel.getText().equalsIgnoreCase(URL), "Incorrect url displayed");
+        assertTrue(homeScreen.userLabel.getText().equalsIgnoreCase(EDITED_CREDENTIAL_USER), "Incorrect user displayed");
     }
 
     @Test
     @Order(3)
-    public void deleteNote() {
-        homeScreen.goToNotes();
-        assertTrue(homeScreen.isNotesTabLoaded(), "Notes tab was not loaded!");
-        homeScreen.tapDeleteNoteButton();
+    public void deleteCredential() {
+        homeScreen.goToCredentials();
+        assertTrue(homeScreen.isCredentialsTabLoaded(), "Credential tab was not loaded!");
+        homeScreen.tapDeleteCredentialButton();
         assertTrue(resultScreen.isResultScreenLoaded(), "Result screen was not loaded!");
         resultScreen.goToHomeScreen();
-        homeScreen.goToNotes();
-        assertTrue(homeScreen.isNotesTabLoaded(), "Notes tab was not loaded!");
+        homeScreen.goToCredentials();
+        assertTrue(homeScreen.isCredentialsTabLoaded(), "Credential tab was not loaded!");
+
         assertTrue(driver.getCurrentUrl().endsWith("home"), "Current url should be /home");
-        assertThrows(NoSuchElementException.class, () -> homeScreen.noteTitleLabel.isDisplayed());
+        assertThrows(NoSuchElementException.class, () -> homeScreen.userLabel.isDisplayed());
     }
 }
