@@ -17,7 +17,7 @@
             <div class="alert alert-danger fill-parent" th:if="${updateFailed}">
                 <h1 class="display-5">Error</h1>
                 <span th:text="${updateFailed}">Example Error Message</span>
-                <span>Click <a th:href="@{/home}">here</a> to continue.</span>
+                <span>Click <a th:href="@{/home}" id="back-to-home-link">here</a> to continue.</span>
             </div>
         </div>
     </body>

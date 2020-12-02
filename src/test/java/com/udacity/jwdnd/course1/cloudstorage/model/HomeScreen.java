@@ -26,18 +26,46 @@ public class HomeScreen extends BaseScreen {
     @FindBy(id="add-credential-button")
     private WebElement addCredentialButton;
 
-    @FindBy(id="note-title")
-    private WebElement noteTitleField;
+    @FindBy(id="edit-note-button")
+    public WebElement editNoteButton;
 
-    @FindBy(id="note-description")
-    private WebElement noteDescriptionField;
+    @FindBy(id="delete-note-button")
+    public WebElement deleteNoteButton;
 
-    @FindBy(id="save-note-changes")
-    private WebElement saveNoteChangesButton;
+    @FindBy(id="edit-credential-button")
+    private WebElement editCredentialeButton;
+
+    @FindBy(id="delete-credential-button")
+    private WebElement deleteCredentialButton;
+
+    @FindBy(id="note-title-label")
+    public WebElement noteTitleLabel;
+
+    @FindBy(id="note-description-label")
+    public WebElement noteDescriptionLabel;
+
+    @FindBy(id="url-label")
+    public WebElement urlLabel;
+
+    @FindBy(id="user-label")
+    public WebElement userLabel;
+
+    @FindBy(id="password-label")
+    public WebElement passwordLabel;
 
     public boolean isScreenLoaded(){
         WebElement logoutButton = wait.until(webDriver -> webDriver.findElement(By.id("logout-button")));
         return logoutButton.isDisplayed();
+    }
+
+    public boolean isNotesTabLoaded(){
+        WebElement addNoteButton = wait.until(webDriver -> webDriver.findElement(By.id("add-note-button")));
+        return addNoteButton.isDisplayed();
+    }
+
+    public boolean isCredentialsTabLoaded(){
+        WebElement addCredentialButton = wait.until(webDriver -> webDriver.findElement(By.id("add-credential-button")));
+        return addCredentialButton.isDisplayed();
     }
 
     public void logout(){
@@ -48,11 +76,16 @@ public class HomeScreen extends BaseScreen {
         notesTab.click();
     }
 
-    public void addNote(String title, String description){
+    public void openNewNoteModal(){
         addNoteButton.click();
-        WebElement noteTitleField = wait.until(webDriver -> webDriver.findElement(By.id("note-title")));
-        noteTitleField.sendKeys(title);
-        noteDescriptionField.sendKeys(description);
-        saveNoteChangesButton.click();
     }
+
+    public void openEditNoteModal(){
+        editNoteButton.click();
+    }
+
+    public void tapDeleteNoteButton(){
+        deleteNoteButton.click();
+    }
+
 }

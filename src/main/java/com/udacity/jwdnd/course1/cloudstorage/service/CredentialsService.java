@@ -51,8 +51,6 @@ public class CredentialsService {
     }
 
     public void updateCredential(CredentialTable credential) {
-        System.out.println(credential.getPassword());
-        System.out.println(credential.getKey());
         String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), credential.getKey());
         credential.setPassword(encryptedPassword);
         credentialsMapper.updateCredential(credential);

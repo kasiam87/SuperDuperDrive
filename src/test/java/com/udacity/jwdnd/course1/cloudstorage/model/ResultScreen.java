@@ -11,19 +11,15 @@ public class ResultScreen extends BaseScreen {
         super(driver);
     }
 
-    @FindBy(id="messageText")
-    private WebElement messageTextInput;
-
-    @FindBy(id="messageType")
-    private WebElement messageTypeOption;
+    @FindBy(linkText="here")
+    private WebElement backToHomeLink;
 
     public boolean isResultScreenLoaded(){
-        WebElement messageTextInput = wait.until(webDriver -> webDriver.findElement(By.id("messageText")));
-        return messageTextInput.isDisplayed();
+        WebElement backToHomeLink = wait.until(webDriver -> webDriver.findElement(By.linkText("here")));
+        return backToHomeLink.isDisplayed();
     }
 
-    public void goToHomeScreen(String msg){
-        messageTextInput.sendKeys(msg);
-        messageTextInput.submit();
+    public void goToHomeScreen(){
+        backToHomeLink.click();
     }
 }
