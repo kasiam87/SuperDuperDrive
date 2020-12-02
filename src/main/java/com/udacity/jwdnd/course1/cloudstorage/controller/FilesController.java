@@ -46,17 +46,22 @@ public class FilesController {
                 actionErrorMsg = "Please select a file to upload. ";
             } else {
                 Integer userId = userService.getUser(authentication.getName()).getUserId();
-                file.setUserId(userId);
-                file.setFilename(StringUtils.cleanPath(multipartFile.getOriginalFilename()));
-                file.setContentType(multipartFile.getContentType());
-                file.setFileSize(String.valueOf(multipartFile.getSize()));
-                try {
-                    file.setFileData(multipartFile.getBytes());
-                } catch (IOException e) {
-                    actionErrorMsg = "Could not retrieve file. ";
-                }
+                String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                if (fileService.isFilePresent(filename, userId)) {
+                    actionErrorMsg = "File with name " + filename + " already exists. ";
+                } else {
+                    file.setUserId(userId);
+                    file.setFilename(filename);
+                    file.setContentType(multipartFile.getContentType());
+                    file.setFileSize(String.valueOf(multipartFile.getSize()));
+                    try {
+                        file.setFileData(multipartFile.getBytes());
+                    } catch (IOException e) {
+                        actionErrorMsg = "Could not retrieve file. ";
+                    }
 
-                fileService.addFile(file);
+                    fileService.addFile(file);
+                }
             }
         } catch (Exception e) {
             actionErrorMsg = "Something went wrong. Please try again. ";
