@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.service.NotesService;
+import com.udacity.jwdnd.course1.cloudstorage.service.ResultService;
 import com.udacity.jwdnd.course1.cloudstorage.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -17,43 +18,47 @@ public class NotesController {
 
     private UserService userService;
     private NotesService notesService;
+    private ResultService resultService;
 
-    public NotesController(UserService userService, NotesService notesService) {
+    public NotesController(UserService userService, NotesService notesService, ResultService resultService) {
         this.userService = userService;
         this.notesService = notesService;
+        this.resultService = resultService;
     }
 
     @PostMapping("/add")
     public String addNote(Authentication authentication, @ModelAttribute Note note, Model model){
         String actionErrorMsg = null;
 
-        Integer userId = userService.getUser(authentication.getName()).getUserId();
-        note.setUserId(userId);
-        notesService.addNote(note);
-
-        if (actionErrorMsg == null) {
-            model.addAttribute("updateSuccess", true);
-        } else {
-            model.addAttribute("updateFailed", actionErrorMsg);
+        try {
+            Integer userId = userService.getUser(authentication.getName()).getUserId();
+            note.setUserId(userId);
+            notesService.addNote(note);
+        } catch (Exception e) {
+            actionErrorMsg = "Something went wrong. Please try again. ";
         }
+
+        resultService.setResultMessage(model, actionErrorMsg);
 
         return "result";
     }
 
     @PostMapping("/{noteId}/delete")
-    public String deleteNote(@PathVariable("noteId") Integer noteId, Note note, Model model){
+    public String deleteNote(@PathVariable("noteId") Integer noteId, Note note, Model model) {
         String actionErrorMsg = null;
 
-        if (!notesService.isNotePresent(note.getNoteId())){
-            actionErrorMsg = "Cannot find note.  ";
-        }
-        notesService.deleteNote(note.getNoteId());
+        try {
+            if (!notesService.isNotePresent(note.getNoteId())) {
+                actionErrorMsg = "Cannot find note. ";
+            }
+            notesService.deleteNote(note.getNoteId());
 
-        if (actionErrorMsg == null) {
-            model.addAttribute("updateSuccess", true);
-        } else {
-            model.addAttribute("updateFailed", actionErrorMsg);
+        } catch (Exception e) {
+            actionErrorMsg = "Something went wrong. Please try again. ";
         }
+
+        resultService.setResultMessage(model, actionErrorMsg);
+
         return "result";
     }
 
@@ -61,17 +66,18 @@ public class NotesController {
     public String updateNote(Note note, Model model){
         String actionErrorMsg = null;
 
-        if (!notesService.isNotePresent(note.getNoteId())){
-            actionErrorMsg = "Cannot find note. ";
+        try {
+            if (!notesService.isNotePresent(note.getNoteId())) {
+                actionErrorMsg = "Cannot find note. ";
+            }
+
+            notesService.updateNote(note);
+        } catch (Exception e) {
+            actionErrorMsg = "Something went wrong. Please try again. ";
         }
 
-        notesService.updateNote(note);
+        resultService.setResultMessage(model, actionErrorMsg);
 
-        if (actionErrorMsg == null) {
-            model.addAttribute("updateSuccess", true);
-        } else {
-            model.addAttribute("updateFailed", actionErrorMsg);
-        }
         return "result";
     }
 }

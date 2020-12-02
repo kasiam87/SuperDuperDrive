@@ -1,8 +1,8 @@
 package com.udacity.jwdnd.course1.cloudstorage.service;
 
 import com.udacity.jwdnd.course1.cloudstorage.mapper.CredentialsMapper;
+import com.udacity.jwdnd.course1.cloudstorage.view.CredentialView;
 import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
-import com.udacity.jwdnd.course1.cloudstorage.model.CredentialTable;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -25,13 +25,13 @@ public class CredentialsService {
         return getCredential(credentialId) != null;
     }
 
-    public CredentialTable getCredential(Integer credentialId){
+    public Credential getCredential(Integer credentialId){
         return credentialsMapper.getCredential(credentialId);
     }
 
-    public List<Credential> getAllCredentials(Integer userId){
-        List<CredentialTable> credentialTable = credentialsMapper.getCredentials(userId);
-        List<Credential> credential = credentialTable.stream().map(CredentialTable::toModel).collect(Collectors.toList());
+    public List<CredentialView> getAllCredentials(Integer userId){
+        List<Credential> credentialTable = credentialsMapper.getCredentials(userId);
+        List<CredentialView> credential = credentialTable.stream().map(Credential::toModel).collect(Collectors.toList());
         credential.forEach(c -> {
             String decryptedPassword = encryptionService.decryptValue(c.getPassword(), c.getKey());
             c.setDecryptedPassword(decryptedPassword);
@@ -39,7 +39,7 @@ public class CredentialsService {
         return credential;
     }
 
-    public void addCredentials(CredentialTable credential) {
+    public void addCredentials(Credential credential) {
         SecureRandom random = new SecureRandom();
         byte[] key = new byte[16];
         random.nextBytes(key);
@@ -50,7 +50,7 @@ public class CredentialsService {
         credentialsMapper.addCredential(credential);
     }
 
-    public void updateCredential(CredentialTable credential) {
+    public void updateCredential(Credential credential) {
         String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), credential.getKey());
         credential.setPassword(encryptedPassword);
         credentialsMapper.updateCredential(credential);

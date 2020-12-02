@@ -1,21 +1,31 @@
-package com.udacity.jwdnd.course1.cloudstorage.model;
+package com.udacity.jwdnd.course1.cloudstorage.view;
 
-public class CredentialTable {
+public class CredentialView {
 
     private Integer credentialId;
     private String url;
     private String username;
     private String key;
     private String password;
+    private String decryptedPassword;
     private Integer userId;
 
-    public CredentialTable(Integer credentialId, String url, String username, String key, String password, Integer userId) {
+    public CredentialView(Integer credentialId, String url, String username, String key, String password, String decryptedPassword, Integer userId) {
         this.credentialId = credentialId;
         this.url = url;
         this.username = username;
         this.key = key;
         this.password = password;
+        this.decryptedPassword = decryptedPassword;
         this.userId = userId;
+    }
+
+    public String getDecryptedPassword() {
+        return decryptedPassword;
+    }
+
+    public void setDecryptedPassword(String decryptedPassword) {
+        this.decryptedPassword = decryptedPassword;
     }
 
     public Integer getCredentialId() {
@@ -66,7 +76,4 @@ public class CredentialTable {
         this.userId = userId;
     }
 
-    public Credential toModel() {
-        return new Credential(credentialId, url, username, key, password, null, userId);
-    }
 }
