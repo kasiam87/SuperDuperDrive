@@ -31,21 +31,15 @@ public class NoteModal extends BaseScreen {
 
     public void enterNoteAndSave(String title, String description) {
         WebElement noteTitleField = wait.until(webDriver -> webDriver.findElement(By.id("note-title")));
-        sleep(1000);
         noteTitleField.sendKeys(title);
-        sleep(1000);
         noteDescriptionField.sendKeys(description);
-        sleep(1000);
         saveNoteChangesButton.click();
     }
 
     public void editNoteAndSave(String title, String description) {
         WebElement editNoteTitleField = wait.until(webDriver -> webDriver.findElement(By.id("edit-note-title")));
-        sleep(1000);
         editNoteTitleField.sendKeys(title);
-        sleep(1000);
         editNoteDescriptionField.sendKeys(description);
-        sleep(1000);
         saveEditNoteChangesButton.click();
     }
 }

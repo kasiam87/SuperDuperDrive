@@ -20,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -38,12 +37,14 @@ public class NotesTests {
     private NoteModal noteModal;
     private ResultScreen resultScreen;
 
-    private static final String noteTitle = "Some title";
-    private static final String noteDescription = "Some description";
+    private static final String USER = "edit-test-user";
+    private static final String PASSWORD = "edit-test-password";
+    private static final String NOTE_TITLE = "Some title";
+    private static final String NOTE_DESCRIPTION = "Some description";
 
-    private static final String suffix = "(2)";
-    private static final String editedTitle = noteTitle + suffix;
-    private static final String editedDescription = noteDescription + suffix;
+    private static final String SUFFIX = "(2)";
+    private static final String EDITED_NOTE_TITLE = NOTE_TITLE + SUFFIX;
+    private static final String EDITED_NOTE_DESCRIPTION = NOTE_DESCRIPTION + SUFFIX;
 
     @BeforeAll
     public void beforeAll() {
@@ -68,7 +69,6 @@ public class NotesTests {
     public void beforeEach() {
         driver.get(String.format("http://localhost:%d/login", port));
         login();
-        homeScreen.sleep(2000);
     }
 
     @AfterEach
@@ -77,14 +77,14 @@ public class NotesTests {
     }
 
     private void login() {
-        loginScreen.login("user", "password");
+        loginScreen.login(USER, PASSWORD);
         assertTrue(homeScreen.isScreenLoaded(), "Home screen was not loaded!");
     }
 
     private void signUp() {
         loginScreen.gotToSignUpScreen();
         assertTrue(signUpScreen.isSignUpScreenLoaded(), "SignUp screen didn't load");
-        signUpScreen.signUp("name", "name", "user", "password");
+        signUpScreen.signUp("name", "name", USER, PASSWORD);
         assertTrue(signUpScreen.isSignUpSuccessful(), "Signup failed!");
     }
 
@@ -98,11 +98,10 @@ public class NotesTests {
     public void createNote() {
         homeScreen.goToNotes();
         homeScreen.openNewNoteModal();
-        noteModal.enterNoteAndSave(noteTitle, noteDescription);
+        noteModal.enterNoteAndSave(NOTE_TITLE, NOTE_DESCRIPTION);
         assertTrue(resultScreen.isResultScreenLoaded(), "Result screen was not loaded!");
         resultScreen.goToHomeScreen();
         assertTrue(driver.getCurrentUrl().endsWith("home"), "Current url should be /home");
-        homeScreen.sleep(1000);
     }
 
     @Test
@@ -110,15 +109,14 @@ public class NotesTests {
     public void editNote() {
         homeScreen.goToNotes();
         assertTrue(homeScreen.isNotesTabLoaded(), "Notes tab was not loaded!");
-        homeScreen.sleep(1000);
         homeScreen.openEditNoteModal();
-        noteModal.editNoteAndSave(suffix, suffix);
+        noteModal.editNoteAndSave(SUFFIX, SUFFIX);
         assertTrue(resultScreen.isResultScreenLoaded(), "Result screen was not loaded!");
         resultScreen.goToHomeScreen();
         homeScreen.goToNotes();
         assertTrue(driver.getCurrentUrl().endsWith("home"), "Current url should be /home");
-        assertTrue(homeScreen.noteTitleLabel.getText().equalsIgnoreCase(editedTitle), "Incorrect title displayed");
-        assertTrue(homeScreen.noteDescriptionLabel.getText().equalsIgnoreCase(editedDescription), "Incorrect description displayed");
+        assertTrue(homeScreen.noteTitleLabel.getText().equalsIgnoreCase(EDITED_NOTE_TITLE), "Incorrect title displayed");
+        assertTrue(homeScreen.noteDescriptionLabel.getText().equalsIgnoreCase(EDITED_NOTE_DESCRIPTION), "Incorrect description displayed");
     }
 
     @Test
