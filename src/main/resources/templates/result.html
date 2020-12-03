@@ -19,6 +19,11 @@
                 <span th:text="${updateFailed}">Example Error Message</span>
                 <span>Click <a th:href="@{/home}" id="back-to-home-link">here</a> to continue.</span>
             </div>
+            <div class="alert alert-danger fill-parent" th:if="${invalidRequest}">
+                <h1 class="display-5">Error</h1>
+                <span th:text="${invalidRequest}">Page does not exist. </span>
+                <span>Click <a th:href="@{/home}" id="back-to-home-link-2">here</a> to continue to home page.</span>
+            </div>
         </div>
     </body>
 </html>
