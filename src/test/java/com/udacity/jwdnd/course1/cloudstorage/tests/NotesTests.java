@@ -88,7 +88,7 @@ public class NotesTests {
         loginScreen.gotToSignUpScreen();
         assertTrue(signUpScreen.isSignUpScreenLoaded(), "SignUp screen didn't load");
         signUpScreen.signUp("name", "name", USER, PASSWORD);
-        assertTrue(signUpScreen.isSignUpSuccessful(), "Signup failed!");
+        assertTrue(loginScreen.isScreenLoaded(), "Signup failed!");
     }
 
     private void logout() {

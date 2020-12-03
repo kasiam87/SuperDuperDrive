@@ -57,8 +57,7 @@ public class AuthTests {
         SignUpScreen signUpScreen = new SignUpScreen(driver);
         assertTrue(signUpScreen.isSignUpScreenLoaded(), "SignUp screen didn't load");
         signUpScreen.signUp("name", "name", "user", "password");
-        assertTrue(signUpScreen.isSignUpSuccessful(), "Signup failed!");
-        signUpScreen.goToLoginScreen();
+        assertTrue(loginScreen.isScreenLoaded(), "Signup failed!");
         loginScreen.login("user", "password");
         HomeScreen homeScreen = new HomeScreen(driver);
         assertTrue(homeScreen.isScreenLoaded(), "Home screen was not loaded!");

@@ -45,11 +45,6 @@ public class SignUpScreen extends BaseScreen {
         submitButton.click();
     }
 
-    public boolean isSignUpSuccessful(){
-        WebElement successMsg = wait.until(webDriver -> webDriver.findElement(By.id("success-msg")));
-        return successMsg.isDisplayed();
-    }
-
     public void goToLoginScreen(){
         loginLink.click();
     }
